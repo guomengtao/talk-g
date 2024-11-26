@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Talk-G (Article Manager)",
+  "version": "1.0",
+  "description": "Chrome extension for managing articles in Supabase database",
+  "icons": {
+    "128": "images/icon128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "images/icon128.png"
+  },
+  "permissions": [
+    "storage",
+    "action"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "host_permissions": [
+    "https://tkcrnfgnspvtzwbbvyfv.supabase.co/*"
+  ]
+} 

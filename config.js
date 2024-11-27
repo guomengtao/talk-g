@@ -35,4 +35,7 @@ const SUPABASE_CONFIG = {
   url: 'https://tkcrnfgnspvtzwbbvyfv.supabase.co',
   getApiKey: () => decrypt(ENCRYPTED_API_KEY),
   tableName: 'superbase_articles'
-}; 
+};
+
+// 导出配置到全局作用域
+window.SUPABASE_CONFIG = SUPABASE_CONFIG; 

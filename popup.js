@@ -24,20 +24,29 @@ function showStatus(message, isError = false) {
 // 获取文章列表
 async function fetchArticles() {
   try {
-    const url = `${window.SUPABASE_CONFIG.url}/rest/v1/${window.SUPABASE_CONFIG.tableName}?select=*&order=created_at.desc`;
+    console.log('Fetching articles...');
+    const url = `${window.SUPABASE_CONFIG.url}/rest/v1/${window.SUPABASE_CONFIG.tableName}?select=*&is_deleted=eq.false&order=created_at.desc`;
+    console.log('Request URL:', url);
     
+    const apiKey = window.SUPABASE_CONFIG.getApiKey();
+    console.log('API Key available:', !!apiKey);
+
     const response = await fetch(url, {
       headers: {
-        'apikey': window.SUPABASE_CONFIG.getApiKey(),
-        'Authorization': `Bearer ${window.SUPABASE_CONFIG.getApiKey()}`
+        'apikey': apiKey,
+        'Authorization': `Bearer ${apiKey}`
       }
     });
 
+    console.log('Response status:', response.status);
     if (!response.ok) {
-      throw new Error('获取文章失败');
+      const errorText = await response.text();
+      console.error('Error response:', errorText);
+      throw new Error(`获取文章失败: ${response.status} ${errorText}`);
     }
 
     const articles = await response.json();
+    console.log('Fetched articles:', articles);
     return articles;
   } catch (error) {
     console.error('Error fetching articles:', error);
@@ -49,6 +58,7 @@ async function fetchArticles() {
 // 更新文章
 async function updateArticle(id, title, content) {
   try {
+    console.log('Updating article:', id);
     const url = `${window.SUPABASE_CONFIG.url}/rest/v1/${window.SUPABASE_CONFIG.tableName}?id=eq.${id}`;
     
     const response = await fetch(url, {
@@ -67,7 +77,9 @@ async function updateArticle(id, title, content) {
     });
 
     if (!response.ok) {
-      throw new Error('更新文章失败');
+      const errorText = await response.text();
+      console.error('Error updating article:', errorText);
+      throw new Error(`更新文章失败: ${response.status} ${errorText}`);
     }
 
     showStatus('文章更新成功');
@@ -82,6 +94,7 @@ async function updateArticle(id, title, content) {
 // 软删除文章
 async function deleteArticle(id) {
   try {
+    console.log('Deleting article:', id);
     const url = `${window.SUPABASE_CONFIG.url}/rest/v1/${window.SUPABASE_CONFIG.tableName}?id=eq.${id}`;
     
     const response = await fetch(url, {
@@ -99,7 +112,9 @@ async function deleteArticle(id) {
     });
 
     if (!response.ok) {
-      throw new Error('删除文章失败');
+      const errorText = await response.text();
+      console.error('Error deleting article:', errorText);
+      throw new Error(`删除文章失败: ${response.status} ${errorText}`);
     }
 
     showStatus('文章已删除');
@@ -115,21 +130,21 @@ async function deleteArticle(id) {
 function renderArticles(articles) {
   const articleList = document.getElementById('articleList');
   
-  if (articles.length === 0) {
+  if (!articles || articles.length === 0) {
     articleList.innerHTML = '<div class="empty-message">暂无文章</div>';
     return;
   }
 
   articleList.innerHTML = articles.map(article => `
     <div class="article-item" data-id="${article.id}">
-      <div class="article-title">${article.title}</div>
-      <div class="article-content">${article.content}</div>
+      <div class="article-title">${article.title || ''}</div>
+      <div class="article-content">${article.content || ''}</div>
       <div class="article-meta">
         <span>创建时间: ${formatDate(article.created_at)}</span>
         <span>更新时间: ${formatDate(article.updated_at)}</span>
       </div>
       <div class="article-actions">
-        <button class="edit-btn" onclick="startEdit(${article.id})">编辑</button>
+        <button class="edit-btn" onclick="startEdit(${article.id}, this)">编辑</button>
         <button class="delete-btn" onclick="confirmDelete(${article.id})">删除</button>
       </div>
     </div>
@@ -137,8 +152,8 @@ function renderArticles(articles) {
 }
 
 // 开始编辑文章
-function startEdit(id) {
-  const articleItem = document.querySelector(`.article-item[data-id="${id}"]`);
+function startEdit(id, button) {
+  const articleItem = button.closest('.article-item');
   const title = articleItem.querySelector('.article-title').textContent;
   const content = articleItem.querySelector('.article-content').textContent;
 
@@ -184,9 +199,19 @@ function confirmDelete(id) {
 
 // 刷新文章列表
 async function refreshArticles() {
+  console.log('Refreshing articles...');
   const articles = await fetchArticles();
-  renderArticles(articles.filter(article => !article.is_deleted));
+  renderArticles(articles);
 }
 
 // 初始化
-document.addEventListener('DOMContentLoaded', refreshArticles); 
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('Popup loaded, initializing...');
+  refreshArticles();
+});
+
+// 将函数暴露到全局作用域
+window.startEdit = startEdit;
+window.saveEdit = saveEdit;
+window.confirmDelete = confirmDelete;
+window.refreshArticles = refreshArticles; 

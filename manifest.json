@@ -1,24 +1,39 @@
 {
   "manifest_version": 3,
-  "name": "Talk-G (Article Manager)",
+  "name": "Talk-G Article Manager",
   "version": "1.0",
-  "description": "Chrome extension for managing articles in Supabase database",
-  "icons": {
-    "128": "images/icon128.png"
-  },
-  "action": {
-    "default_popup": "popup.html",
-    "default_icon": "images/icon128.png"
-  },
+  "description": "文章管理器扩展",
   "permissions": [
     "storage",
-    "action"
+    "notifications",
+    "alarms"
   ],
-  "background": {
-    "service_worker": "background.js",
-    "type": "module"
-  },
   "host_permissions": [
     "https://tkcrnfgnspvtzwbbvyfv.supabase.co/*"
-  ]
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/icon16.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "js/background.js",
+    "type": "module"
+  },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "css": ["css/editor.css"],
+    "js": ["js/editor.js"]
+  }],
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' https://tkcrnfgnspvtzwbbvyfv.supabase.co; object-src 'self'"
+  }
 } 

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Icons</title>
+</head>
+<body>
+    <canvas id="icon16" width="16" height="16"></canvas>
+    <canvas id="icon48" width="48" height="48"></canvas>
+    <canvas id="icon128" width="128" height="128"></canvas>
+
+    <script>
+        function generateIcon(canvasId, size) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // Clear background
+            ctx.fillStyle = 'transparent';
+            ctx.fillRect(0, 0, size, size);
+            
+            // Set text properties
+            ctx.fillStyle = '#000000';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Adjust font size based on icon size
+            const fontSize = Math.floor(size * 0.7);
+            ctx.font = `bold ${fontSize}px Arial`;
+            
+            // Draw the letter G
+            ctx.fillText('G', size/2, size/2);
+            
+            // Convert to PNG
+            return canvas.toDataURL('image/png');
+        }
+
+        // Generate all icon sizes
+        const sizes = [
+            { id: 'icon16', size: 16 },
+            { id: 'icon48', size: 48 },
+            { id: 'icon128', size: 128 }
+        ];
+
+        sizes.forEach(({id, size}) => {
+            const dataUrl = generateIcon(id, size);
+            console.log(`${id} data URL:`, dataUrl);
+        });
+    </script>
+</body>
+</html>

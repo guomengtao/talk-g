@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Article Manager</title>
+    <link rel="stylesheet" href="css/articles.css">
+</head>
+<body>
+    <div class="container">
+        <div id="notification" class="notification"></div>
+
+        <!-- List View -->
+        <div id="listView" class="view">
+            <div class="header">
+                <h1>Articles</h1>
+                <div class="controls">
+                    <label class="toggle-container">
+                        <input type="checkbox" id="showDeleted">
+                        Show Deleted
+                    </label>
+                    <button id="refreshBtn" class="btn">Refresh</button>
+                </div>
+            </div>
+            <div id="articlesList" class="articles-list"></div>
+        </div>
+
+        <!-- Edit View -->
+        <div id="editView" class="view hidden">
+            <div class="header">
+                <div class="back-button" id="backToList">← Back to List</div>
+                <h1>Edit Article</h1>
+            </div>
+            <div class="edit-form">
+                <div class="form-group">
+                    <label for="titleInput">Title</label>
+                    <input type="text" id="titleInput" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="urlInput">URL</label>
+                    <input type="text" id="urlInput" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="contentInput">Content</label>
+                    <textarea id="contentInput" class="form-control" rows="10"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="priorityInput">Priority</label>
+                    <select id="priorityInput" class="form-control">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button id="saveBtn" class="btn btn-primary">Save Changes</button>
+                    <button id="deleteBtn" class="btn btn-danger">Delete Article</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/articles.js"></script>
+</body>
+</html>

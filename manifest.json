@@ -1,16 +1,19 @@
 {
   "manifest_version": 3,
-  "name": "Talk-G Article Manager",
+  "name": "Talk-G Article Browser",
   "version": "1.0",
-  "description": "文章管理器扩展",
+  "description": "文章浏览器",
   "permissions": [
     "storage",
-    "notifications",
-    "alarms"
+    "alarms",
+    "windows"
   ],
   "host_permissions": [
     "https://tkcrnfgnspvtzwbbvyfv.supabase.co/*"
   ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -20,20 +23,22 @@
     }
   },
   "background": {
-    "service_worker": "js/background.js",
+    "service_worker": "dist/background.bundle.js",
     "type": "module"
   },
-  "content_scripts": [{
-    "matches": ["<all_urls>"],
-    "css": ["css/editor.css"],
-    "js": ["js/editor.js"]
-  }],
   "icons": {
     "16": "images/icon16.png",
     "48": "images/icon48.png",
     "128": "images/icon128.png"
   },
-  "content_security_policy": {
-    "extension_pages": "script-src 'self' https://tkcrnfgnspvtzwbbvyfv.supabase.co; object-src 'self'"
-  }
-} 
+  "web_accessible_resources": [
+    {
+      "resources": ["articles.html"],
+      "matches": ["<all_urls>"]
+    },
+    {
+      "resources": ["dist/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

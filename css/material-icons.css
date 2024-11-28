@@ -1,0 +1,10 @@
+/* Material Icons Font */
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap; /* This will show a fallback font while the icon font loads */
+  src: local('Material Icons'),
+       local('MaterialIcons-Regular'),
+       url('fonts/MaterialIcons-Regular.woff2') format('woff2');
+}

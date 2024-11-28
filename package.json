@@ -1,0 +1,90 @@
+{
+  "name": "talk-g",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:unit": "jest tests/unit",
+    "test:mocha": "mocha 'tests/mocha/**/*.test.js' --require tests/mocha/setup.js",
+    "test:integration": "jest --config=jest.integration.config.js",
+    "test:all": "npm run test && npm run test:integration",
+    "test:screenshot": "jest --config=jest.screenshot.config.js",
+    "build": "webpack --config webpack.config.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.7",
+    "@babel/plugin-transform-modules-commonjs": "^7.25.9",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/register": "^7.23.7",
+    "@jest/globals": "^29.7.0",
+    "@types/jest-environment-puppeteer": "^5.0.6",
+    "@types/puppeteer": "^5.4.7",
+    "babel-jest": "^29.7.0",
+    "chai": "^4.3.7",
+    "copy-webpack-plugin": "^12.0.2",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jest-puppeteer": "^10.1.4",
+    "jsdom": "^25.0.1",
+    "mocha": "^10.2.0",
+    "puppeteer": "^23.9.0",
+    "sinon": "^17.0.1",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "moduleFileExtensions": [
+      "js",
+      "json"
+    ],
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "testMatch": [
+      "**/__tests__/**/*.js",
+      "**/?(*.)+(spec|test).js",
+      "**/tests/**/*.test.js",
+      "**/js/**/*.test.js"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/js/test-setup.js"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sass)$": "<rootDir>/__mocks__/styleMock.js",
+      "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
+    },
+    "moduleDirectories": [
+      "node_modules",
+      "js"
+    ],
+    "transformIgnorePatterns": [],
+    "collectCoverageFrom": [
+      "js/**/*.js",
+      "!js/**/*.test.js",
+      "!js/test-setup.js"
+    ]
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.3",
+    "agent-base": "^7.1.1",
+    "cssstyle": "^4.1.0",
+    "data-urls": "^5.0.0",
+    "html-encoding-sniffer": "^4.0.0",
+    "http-proxy-agent": "^7.0.2",
+    "https-proxy-agent": "^7.0.5",
+    "tough-cookie": "^5.0.0",
+    "tr46": "^5.0.0",
+    "w3c-xmlserializer": "^5.0.0",
+    "whatwg-encoding": "^3.1.1",
+    "whatwg-mimetype": "^4.0.0",
+    "whatwg-url": "^14.0.0",
+    "xml-name-validator": "^5.0.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
